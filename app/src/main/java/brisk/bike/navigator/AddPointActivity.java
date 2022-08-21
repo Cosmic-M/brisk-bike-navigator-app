@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
 import com.google.android.gms.maps.model.LatLng;
 import java.io.File;
 import brisk.bike.navigator.modul.MemoryPlace;
@@ -73,7 +75,7 @@ public class AddPointActivity extends AppCompatActivity {
         boolean canTakePhoto = mPhotoFile != null && cameraIntent.resolveActivity(packageManager) != null;
         mPhoto.setEnabled(canTakePhoto);
         if (canTakePhoto) {
-            Uri uri = Uri.fromFile(mPhotoFile);
+            Uri uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", mPhotoFile);
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         }
         mCameraButton.setOnClickListener(new View.OnClickListener() {
