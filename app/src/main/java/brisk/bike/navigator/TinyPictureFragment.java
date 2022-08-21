@@ -36,7 +36,7 @@ public class TinyPictureFragment extends Fragment implements View.OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setRetainInstance(true);
+        setRetainInstance(true);
         tag = getArguments().getInt(EXTRA_TAG_ARG);
         MemoryPlace mp = PlaceLab.get(getActivity()).getMemoryPlace().get(tag);
         file = PlaceLab.get(getActivity()).getPhotoFile(mp);
