@@ -35,7 +35,7 @@ interesting places with your friends!<br>
   Connect your physical device and load APK file (Rebuild project + Run app).<br>
 
 <h3>Some screenshots from the game:</h3>
-<img alt="route_to_missile_base.png" height="200" src="route_to_missile_base.png" width="100"/>
+<res/drawable/img alt="route_to_missile_base.png" height="200" src="route_to_missile_base.png" width="100"/>
 <img alt="romantic.png" height="200" src="romantic.png" width="105"/>
 <img alt="two_rivers_place.png" height="200" src="two_rivers_place.png" width="100"/>
 <img alt="rocket_base.png" height="200" src="rocket_base.png" width="135"/>
