@@ -13,7 +13,7 @@ interesting places with your friends!<br>
 <h3>Some interesting features:</h3>
 - available storage for your data<br>
 - some interesting places to visit will be represented from Kharkiv region, strictly speaking, from<br>
-  Zmiiv district, since I'm from here. Welcome)
+  Zmiiv district, since I'm from here. Welcome)<br>
 - you can planned your route according to total distance resolved by Google Maps API<br>
 
 <h3>In this APP were used such technologies, tools, libraries like:</h3>
