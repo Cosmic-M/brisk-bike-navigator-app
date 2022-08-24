@@ -1,5 +1,6 @@
 package brisk.bike.navigator;
 
+import static com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,7 +17,6 @@ import android.os.Parcelable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +36,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
-import static com.google.android.gms.maps.GoogleMap.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -49,8 +48,7 @@ import brisk.bike.navigator.modul.Route;
 
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback, DirectionFinderListener, RouteComposeListener, OnMarkerClickListener {
-    private static final int PERMISSION_FOR_CAMERA_CODE = 1;
-    private static final int PERMISSION_FOR_LOCATION_CODE = 2;
+    private static final int PERMISSION_FOR_LOCATION_CODE = 250;
     private static final String DESTINATION = "destination";
     private static final String LOCATION = "location";
     private static final String LATITUDE_LONGITUDE = "lat_Lng";
@@ -63,9 +61,6 @@ public class MapsActivity extends AppCompatActivity
     private static final int REQUEST_NEW_POINT = 250;
     private static final int REQUEST_NEW_POINT_REMOVE_OLD_DESTINATION = 350;
     private static final int PREVIEW_POINTS = 450;
-    private Button mFindPath;
-    private Button mShowAllPlaces;
-    private Button mPermission;
     private GoogleMap mMap;
     private List<MemoryPlace> mListSavedLocations;
     private List<Marker> originMarkers = new ArrayList<>();
@@ -83,7 +78,7 @@ public class MapsActivity extends AppCompatActivity
     private boolean flag;
 
     @Override
-    public void onSaveInstanceState(Bundle saveInstanceState) {
+    public void onSaveInstanceState(@NonNull Bundle saveInstanceState) {
         super.onSaveInstanceState(saveInstanceState);
         saveInstanceState.putParcelable(DESTINATION, mDestinationPoint);
         saveInstanceState.putParcelable(LOCATION, myLocation);
@@ -100,7 +95,6 @@ public class MapsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         if (savedInstanceState != null) {
             mDestinationPoint = savedInstanceState.getParcelable(DESTINATION);
             myLocation = savedInstanceState.getParcelable(LOCATION);
@@ -112,50 +106,33 @@ public class MapsActivity extends AppCompatActivity
             flag = savedInstanceState.getBoolean(FLAG);
             mListSavedLocations = savedInstanceState.getParcelableArrayList(LIST_SAVED_LOCATION);
         }
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        mFindPath = (Button) findViewById(R.id.btnFindPath);
-        mShowAllPlaces = (Button) findViewById(R.id.showAllPlaces);
-        mPermission = (Button) findViewById(R.id.btnPermission);
-
-        mFindPath.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isNetworkAvailableAndConnected()) {
-                    Toast.makeText(MapsActivity.this, "no internet access", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (mDestinationPoint == null) {
-                    Toast.makeText(MapsActivity.this, "Destination Is Absent!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (myLocation == null && mDestinationPoint == null) {
-                    Toast.makeText(MapsActivity.this, "Current Location Is Absent!", Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
-                    if (mTag != -1) {
-                        onRemoveFragment(mTag);
-                        mTag = -1;
-                    }
-                    sendRequest();
-                }
+        Button mFindPath = findViewById(R.id.btnFindPath);
+        Button mShowAllPlaces = findViewById(R.id.showAllPlaces);
+        mFindPath.setOnClickListener(v -> {
+            if (!isNetworkAvailableAndConnected()) {
+                Toast.makeText(MapsActivity.this, "no internet access", Toast.LENGTH_SHORT).show();
+                return;
             }
-        });
-        mShowAllPlaces.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                updateCamera(true);
+            if (mDestinationPoint == null) {
+                Toast.makeText(MapsActivity.this, "Destination Is Absent!", Toast.LENGTH_SHORT).show();
+                return;
             }
+            if (mTag != -1) {
+                onRemoveFragment(mTag);
+                mTag = -1;
+            }
+            sendRequest();
         });
+        mShowAllPlaces.setOnClickListener(v -> updateCamera(true));
     }
 
     private boolean isNetworkAvailableAndConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
-        boolean isNetworkConnected = isNetworkAvailable && cm.getActiveNetworkInfo().isConnected();
-        return isNetworkConnected;
+        return isNetworkAvailable && cm.getActiveNetworkInfo().isConnected();
     }
 
     @Override
@@ -186,21 +163,18 @@ public class MapsActivity extends AppCompatActivity
             case R.id.clear_all_appointed_points_item:
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(MapsActivity.this);
                 alertDialog.setTitle(R.string.request);
-                alertDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mPolylineOptions = null;
-                        mDestinationPoint = null;
-                        mTransitionPoints.clear();
-                        mDistance = "0 km";
-                        ((TextView) findViewById(R.id.tvDistance)).setText(mDistance);
-                        if (mTag != -1) {
-                            onRemoveFragment(mTag);
-                            mTag = -1;
-                        }
-                        updateCamera(true);
-                        Toast.makeText(MapsActivity.this, "CLEAR", Toast.LENGTH_SHORT).show();
+                alertDialog.setPositiveButton(R.string.yes, (dialog, which) -> {
+                    mPolylineOptions = null;
+                    mDestinationPoint = null;
+                    mTransitionPoints.clear();
+                    mDistance = "0 km";
+                    ((TextView) findViewById(R.id.tvDistance)).setText(mDistance);
+                    if (mTag != -1) {
+                        onRemoveFragment(mTag);
+                        mTag = -1;
                     }
+                    updateCamera(true);
+                    Toast.makeText(MapsActivity.this, "CLEAR", Toast.LENGTH_SHORT).show();
                 });
                 alertDialog.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
@@ -221,10 +195,8 @@ public class MapsActivity extends AppCompatActivity
                     Toast.makeText(this, "try later, current location is't detected", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-
                 String lat = String.format("%.8g%n", myLocation.latitude).replace(",", ".");
                 String lon = String.format("%.8g%n", myLocation.longitude).replace(",", ".");
-
                 double latitude = Double.parseDouble(lat);
                 double longitude = Double.parseDouble(lon);
                 LatLng trimLatLng = new LatLng(latitude, longitude);
@@ -265,7 +237,7 @@ public class MapsActivity extends AppCompatActivity
         }
     }
 
-    private LocationListener mLocationListener = new LocationListener() {
+    private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             myLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -310,14 +282,8 @@ public class MapsActivity extends AppCompatActivity
             return;
         }
         mMap.clear();
-        String origin = String.valueOf(myLocation.latitude) + ", " + String.valueOf(myLocation.longitude);
-        String destination = String.valueOf(mDestinationPoint.latitude) + ", " + String.valueOf(mDestinationPoint.longitude);
-        if (origin.isEmpty()) {
-            Toast.makeText(this, "Enter the origin of route", Toast.LENGTH_SHORT).show();
-        }
-        if (destination.isEmpty()) {
-            Toast.makeText(this, "Enter destination point", Toast.LENGTH_SHORT).show();
-        }
+        String origin = myLocation.latitude + ", " + myLocation.longitude;
+        String destination = mDestinationPoint.latitude + ", " + mDestinationPoint.longitude;
         try {
             try {
                 new DirectionFinder(this, origin, destination, convertLatLngListToStringList(mTransitionPoints)).execute();
@@ -332,19 +298,15 @@ public class MapsActivity extends AppCompatActivity
     private static List<String> convertLatLngListToStringList(List<LatLng> latLngsList) {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < latLngsList.size(); i++) {
-            if (i != latLngsList.size()) {
-                list.add(String.valueOf(latLngsList.get(i).latitude) +
-                        "%2C" + String.valueOf(latLngsList.get(i).longitude) + "%7C");
-            } else {
-                list.add(String.valueOf(latLngsList.get(i).latitude) +
-                        "%2C" + String.valueOf(latLngsList.get(i).longitude));
-            }
+            latLngsList.size();
+            list.add(latLngsList.get(i).latitude +
+                    "%2C" + latLngsList.get(i).longitude + "%7C");
         }
         return list;
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
         updateCamera(true);
@@ -408,9 +370,9 @@ public class MapsActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onMarkerClick(final Marker marker) {
+    public boolean onMarkerClick(@NonNull final Marker marker) {
         int tag;
-        if (marker != null && marker.getTag() != null) {
+        if (marker.getTag() != null) {
             tag = (int) marker.getTag();
             mTag = tag;
             TinyPictureFragment fragment = TinyPictureFragment.newInstance(tag);
@@ -486,7 +448,6 @@ public class MapsActivity extends AppCompatActivity
         if (myLocation != null) {
             bounds.include(myLocation);
         }
-
         if (withFocusing) {
             int margin = getResources().getDimensionPixelSize(R.dimen.map_insert_margin);
 
@@ -497,14 +458,7 @@ public class MapsActivity extends AppCompatActivity
                 return;
             }
             mMap.setMyLocationEnabled(true);
-
-            final LatLngBounds.Builder finalBounds = bounds;
-            mMap.setOnMapLoadedCallback(new OnMapLoadedCallback() {
-                @Override
-                public void onMapLoaded() {
-                    mMap.animateCamera(update);
-                }
-            });
+            mMap.setOnMapLoadedCallback(() -> mMap.animateCamera(update));
         }
     }
 
@@ -535,28 +489,30 @@ public class MapsActivity extends AppCompatActivity
         polylinePaths = new ArrayList<>();
         originMarkers = new ArrayList<>();
         destinationMarkers = new ArrayList<>();
+        LatLngBounds.Builder bounds = new LatLngBounds.Builder();
         for (Route route : routes) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
             mDistance = route.distance.text;
-            ((TextView) findViewById(R.id.tvDistance)).setText(mDistance);
-
+            TextView viewById = findViewById(R.id.tvDistance);
+            viewById.setBackgroundColor(Color.parseColor("#000000"));
+            viewById.setText(mDistance);
+            bounds.include(myLocation);
             originMarkers.add(mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.start_marker))
                     .title(route.startAddress)
                     .position(route.startLocation)));
-
             for (LatLng point : mTransitionPoints) {
                 mMap.addMarker(new MarkerOptions()
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.transition_marker))
                         .title("transit point")
                         .position(point));
+                bounds.include(point);
             }
-
             destinationMarkers.add(mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.finish_marker))
                     .title(route.endAddress)
                     .position(route.endLocation)));
-
+            bounds.include(mDestinationPoint);
             mPolylineOptions = new PolylineOptions().
                     geodesic(true).
                     color(Color.RED).
@@ -564,6 +520,9 @@ public class MapsActivity extends AppCompatActivity
             for (int i = 0; i < route.points.size(); i++)
                 mPolylineOptions.add(route.points.get(i));
             polylinePaths.add(mMap.addPolyline(mPolylineOptions));
+            int margin = getResources().getDimensionPixelSize(R.dimen.map_insert_margin);
+            final CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds.build(), margin);
+            mMap.animateCamera(update);
         }
     }
 }

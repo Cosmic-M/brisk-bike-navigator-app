@@ -13,7 +13,7 @@ interesting places with your friends!<br>
 <h3>Some interesting features:</h3>
 - available storage for your data<br>
 - some interesting places to visit will be represented from Kharkiv region, strictly speaking, from<br>
-  Zmiiv district, since I'm from here. Welcome)
+  Zmiiv district, since I'm from here. Welcome)<br>
 - you can planned your route according to total distance resolved by Google Maps API<br>
 
 <h3>In this APP were used such technologies, tools, libraries like:</h3>
@@ -23,9 +23,9 @@ interesting places with your friends!<br>
 - MediaStore<br>
 
 <h3>Instructions for assembling and running the application:</h3>
-- To install from Google Play Market, follow the link:
+- To install from Google Play Market, follow the link:<br>
   https://play.google.com/store/apps/details?id=com.development.cosmic_m.navigator on your mobile phone.<br>
-  It's supported for android 4.4.2 (KitKat) and more high versions.
+  It's supported for android 4.4.2 (KitKat) and more high versions.<br>
 - Not the easiest way: you have to be the developer environment available (to build the application, you<br>
   need JDK, Git Android Studio installed + all needed drivers and libraries<br>
   (Tools -> SDK Manager -> SDK Tools).<br>
@@ -35,7 +35,7 @@ interesting places with your friends!<br>
   Connect your physical device and load APK file (Rebuild project + Run app).<br>
 
 <h3>Some screenshots from the game:</h3>
-<img alt="route_to_missile_base.png" height="200" src="route_to_missile_base.png" width="100"/>
+<img alt="route_to_missile_base.png" height="200" src="res/drawable/route_to_missile_base.png" width="100"/>
 <img alt="romantic.png" height="200" src="romantic.png" width="105"/>
 <img alt="two_rivers_place.png" height="200" src="two_rivers_place.png" width="100"/>
 <img alt="rocket_base.png" height="200" src="rocket_base.png" width="135"/>
