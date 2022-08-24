@@ -23,8 +23,7 @@ interesting places with your friends!<br>
 - MediaStore<br>
 
 <h3>Instructions for assembling and running the application:</h3>
-- To install from Google Play Market, follow the link:<br>
-  https://play.google.com/store/apps/details?id=com.development.cosmic_m.navigator on your mobile phone.<br>
+- To install from Google Play Market<br>
   It's supported for android 4.4.2 (KitKat) and more high versions.<br>
 - Not the easiest way: you have to be the developer environment available (to build the application, you<br>
   need JDK, Git Android Studio installed + all needed drivers and libraries<br>
