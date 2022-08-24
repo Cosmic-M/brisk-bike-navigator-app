@@ -7,7 +7,8 @@ import com.google.android.gms.maps.model.LatLng;
 import brisk.bike.navigator.modul.MemoryPlace;
 
 /**
- * Created by Cosmic_M on 24.09.2017.
+ * Created by Cosmic_M at 03.10.2017
+ * Refactored by Cosmic_M at 24.8.2022
  */
 
 public class MemoryPlaceCursorWrapper extends CursorWrapper {
@@ -17,12 +18,11 @@ public class MemoryPlaceCursorWrapper extends CursorWrapper {
 
     public MemoryPlace getPlace(){
         int _id = getInt(getColumnIndex(SchemaDB.Cols.ID));
-        Double latitude = getDouble(getColumnIndex(SchemaDB.Cols.LATITUDE));
-        Double longitude = getDouble(getColumnIndex(SchemaDB.Cols.LONGITUDE));
+        double latitude = getDouble(getColumnIndex(SchemaDB.Cols.LATITUDE));
+        double longitude = getDouble(getColumnIndex(SchemaDB.Cols.LONGITUDE));
         String file_name = getString(getColumnIndex(SchemaDB.Cols.FILE_IMAGE_NAME));
         String description = getString(getColumnIndex(SchemaDB.Cols.DESCRIPTION));
         LatLng latLng = new LatLng(latitude, longitude);
-        MemoryPlace mp = new MemoryPlace(_id, latLng, file_name, description);
-        return mp;
+        return new MemoryPlace(_id, latLng, file_name, description);
     }
 }

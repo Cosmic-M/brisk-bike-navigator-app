@@ -11,16 +11,14 @@ import android.widget.TextView;
 import androidx.fragment.app.DialogFragment;
 
 /**
- * Created by Cosmic_M on 28.10.2017.
+ * Created by Cosmic_M at 03.10.2017
+ * Refactored by Cosmic_M at 24.8.2022
  */
 
 public class RemoveOrCancelDialog extends DialogFragment implements View.OnClickListener{
     private static final String REQUEST_TEXT_DIALOG = "package com.development.cosmic_m.navigator.text_dialog";
     private static final String ROW_DB_MUST_DELETE = "package com.development.cosmic_m.navigator.row_must_delete";
     private View view = null;
-    private TextView request;
-    private Button positiveBtn;
-    private Button negativeBtn;
     private String text;
     private int rowDBMustDelete;
 
@@ -46,9 +44,9 @@ public class RemoveOrCancelDialog extends DialogFragment implements View.OnClick
         if (view == null) {
             getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
             view = inflater.inflate(R.layout.dialog_container, container, false);
-            request = (TextView) view.findViewById(R.id.text_dialog_id);
-            positiveBtn = (Button) view.findViewById(R.id.positive_btn_id);
-            negativeBtn = (Button) view.findViewById(R.id.negative_btn_id);
+            TextView request = view.findViewById(R.id.text_dialog_id);
+            Button positiveBtn = view.findViewById(R.id.positive_btn_id);
+            Button negativeBtn = view.findViewById(R.id.negative_btn_id);
 
             positiveBtn.setOnClickListener(this);
             negativeBtn.setOnClickListener(this);

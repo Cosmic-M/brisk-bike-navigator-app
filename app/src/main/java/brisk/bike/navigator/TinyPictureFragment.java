@@ -11,7 +11,8 @@ import java.io.File;
 import brisk.bike.navigator.modul.MemoryPlace;
 
 /**
- * Created by Cosmic_M on 23.10.2017.
+ * Created by Cosmic_M at 03.10.2017
+ * Refactored by Cosmic_M at 24.8.2022
  */
 
 public class TinyPictureFragment extends Fragment implements View.OnClickListener {
@@ -19,11 +20,7 @@ public class TinyPictureFragment extends Fragment implements View.OnClickListene
     private File file;
     private int tag;
     private static final String EXTRA_TAG_ARG = "tag";
-
-    private ImageView mDetailedPointShow;
-    private ImageView mAssignDestinationPoint;
     private ImageView mAssignTransitionPoint;
-    private ImageView mExcludePoint;
 
     public static TinyPictureFragment newInstance(int tag) {
         Bundle bundle = new Bundle();
@@ -46,21 +43,18 @@ public class TinyPictureFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mini_image, container, false);
         listener = (RouteComposeListener) getActivity();
-        mDetailedPointShow = (ImageView) view.findViewById(R.id.mini_image_id);
-        mAssignDestinationPoint = (ImageView) view.findViewById(R.id.btn_target_point_id);
-        mAssignTransitionPoint = (ImageView) view.findViewById(R.id.btn_transit_point_id);
-        mExcludePoint = (ImageView) view.findViewById(R.id.btn_remove_point_id);
+        ImageView mDetailedPointShow = view.findViewById(R.id.mini_image_id);
+        ImageView mAssignDestinationPoint = view.findViewById(R.id.btn_target_point_id);
+        mAssignTransitionPoint = view.findViewById(R.id.btn_transit_point_id);
+        ImageView mExcludePoint = view.findViewById(R.id.btn_remove_point_id);
         Bitmap bitmap = PictureUtils.getScaledBitmap(file.getPath(), getActivity());
         mDetailedPointShow.setImageBitmap(bitmap);
-
         int resource = listener.getResourceForTransitionImage(tag);
         mAssignTransitionPoint.setImageResource(resource);
-
         mDetailedPointShow.setOnClickListener(this);
         mExcludePoint.setOnClickListener(this);
         mAssignDestinationPoint.setOnClickListener(this);
         mAssignTransitionPoint.setOnClickListener(this);
-
         return view;
     }
 

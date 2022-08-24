@@ -46,6 +46,11 @@ import brisk.bike.navigator.modul.DirectionFinderListener;
 import brisk.bike.navigator.modul.MemoryPlace;
 import brisk.bike.navigator.modul.Route;
 
+/**
+ * Created by Cosmic_M at 03.10.2017
+ * Refactored by Cosmic_M at 24.8.2022
+ */
+
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback, DirectionFinderListener, RouteComposeListener, OnMarkerClickListener {
     private static final int PERMISSION_FOR_LOCATION_CODE = 250;

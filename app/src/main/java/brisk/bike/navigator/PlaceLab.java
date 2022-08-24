@@ -20,13 +20,14 @@ import brisk.bike.navigator.db.SchemaDB;
 import brisk.bike.navigator.modul.MemoryPlace;
 
 /**
- * Created by Cosmic_M on 16.09.2017.
+ * Created by Cosmic_M at 03.10.2017
+ * Refactored by Cosmic_M at 24.8.2022
  */
 
 public class PlaceLab {
     private static PlaceLab mPlaceLab;
-    private Context mContext;
-    private SQLiteDatabase mBase;
+    private final Context mContext;
+    private final SQLiteDatabase mBase;
 
     public static PlaceLab get(Context context){
         if (mPlaceLab == null){

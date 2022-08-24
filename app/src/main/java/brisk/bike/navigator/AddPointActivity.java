@@ -18,24 +18,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
-
 import com.google.android.gms.maps.model.LatLng;
 import java.io.File;
 import brisk.bike.navigator.modul.MemoryPlace;
 
 /**
- * Created by Cosmic_M on 15.09.2017.
+ * Created by Cosmic_M at 03.10.2017
+ * Refactored by Cosmic_M at 24.8.2022
  */
 
 public class AddPointActivity extends AppCompatActivity {
     private static final int REQUEST_PHOTO = 100;
     private static final String PHOTO_FILE = "photo_file";
-    private TextView mLatitude;
-    private TextView mLongitude;
-    private ImageButton mCameraButton;
-    private Button mAddPoint;
     private ImageView mPhoto;
-    private EditText mNotationText;
     private File mPhotoFile;
     private String et;
     private MemoryPlace mp;
@@ -54,12 +49,12 @@ public class AddPointActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_point);
-        mLatitude = (TextView) findViewById(R.id.tvLatitude);
-        mLongitude = (TextView) findViewById(R.id.tvLongitude);
-        mAddPoint = (Button) findViewById(R.id.btn_add_point);
-        mPhoto = (ImageView) findViewById(R.id.image_id);
-        mNotationText = (EditText) findViewById(R.id.et_notations);
-        mCameraButton = (ImageButton) findViewById(R.id.camera_id);
+        TextView mLatitude = findViewById(R.id.tvLatitude);
+        TextView mLongitude = findViewById(R.id.tvLongitude);
+        Button mAddPoint = findViewById(R.id.btn_add_point);
+        mPhoto = findViewById(R.id.image_id);
+        EditText mNotationText = findViewById(R.id.et_notations);
+        ImageButton mCameraButton = findViewById(R.id.camera_id);
         LatLng latLng = getIntent().getParcelableExtra("latlng");
         mLatitude.setText(String.valueOf(latLng.latitude));
         mLongitude.setText(String.valueOf(latLng.longitude));
@@ -78,21 +73,12 @@ public class AddPointActivity extends AppCompatActivity {
             Uri uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", mPhotoFile);
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         }
-        mCameraButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(cameraIntent, REQUEST_PHOTO);
-            }
-        });
-        mAddPoint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mp.setTextDescription(et);
-                PlaceLab.get(getApplicationContext()).insertPlaceIntoDB(mp);
-                setResult(RESULT_OK);
-                finish();
-            }
+        mCameraButton.setOnClickListener(v -> startActivityForResult(cameraIntent, REQUEST_PHOTO));
+        mAddPoint.setOnClickListener(v -> {
+            mp.setTextDescription(et);
+            PlaceLab.get(getApplicationContext()).insertPlaceIntoDB(mp);
+            setResult(RESULT_OK);
+            finish();
         });
 
         mNotationText.addTextChangedListener(new TextWatcher() {

@@ -2,36 +2,33 @@ package brisk.bike.navigator.modul;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Cosmic_M on 11.09.2017.
+ * Created by Cosmic_M at 03.10.2017
+ * Refactored by Cosmic_M at 24.8.2022
  */
 
 public class DirectionFinder {
     private static final String TAG = "TAG";
     private static final String DIRECTION_URL_API = "https://maps.googleapis.com/maps/api/directions/json?";
-    private static final String GOOGLE_API_KEY = "${MAPS_API_KEY}";
-    private String origin;
-    private String destination;
-    private DirectionFinderListener listener;
-    private List<String> transitPoints;
+    private static final String GOOGLE_API_KEY = "AIzaSyAn4gwyt14kRunxHY1kIsGPYTeAXqWpfdo";
+    private final String origin;
+    private final String destination;
+    private final DirectionFinderListener listener;
+    private final List<String> transitPoints;
 
     public DirectionFinder(DirectionFinderListener listener, String origin, String destination, List<String> transitPoints){
         this.listener = listener;
@@ -79,9 +76,6 @@ public class DirectionFinder {
                 }
                 Log.i(TAG, buffer.toString());
                 return buffer.toString();
-            } catch (MalformedURLException e) {
-                Log.i(TAG, e.getMessage());
-                e.printStackTrace();
             } catch (IOException e) {
                 Log.i(TAG, e.getMessage());
                 e.printStackTrace();

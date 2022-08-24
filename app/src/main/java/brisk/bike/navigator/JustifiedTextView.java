@@ -16,17 +16,17 @@ import android.widget.Scroller;
 import java.util.StringTokenizer;
 
 /**
- * Created by Cosmic_M on 21.09.2017.
+ * Created by Cosmic_M at 03.10.2017
+ * Refactored by Cosmic_M at 24.8.2022
  */
 
 public class JustifiedTextView extends View {
-    private static final String TAG = "TAG";
     private String mText;
     private Paint mPaint;
     private Paint.FontMetricsInt mFontMetrics;
     private int mSpace;
     private int mIndent;
-    private Context mContext;
+    private final Context mContext;
     private int mWidthScreen;
     private boolean flag, newFlag;
     int mHeightScreen = 0;
@@ -46,15 +46,12 @@ public class JustifiedTextView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int desiredWidth = mWidthScreen;
         int desiredHeight = mHeightScreen + 5;
-
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
         int width;
         int height;
-
         if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSize;
         } else if (widthMode == MeasureSpec.AT_MOST) {
@@ -62,7 +59,6 @@ public class JustifiedTextView extends View {
         } else {
             width = desiredWidth;
         }
-
         if (heightMode == MeasureSpec.EXACTLY) {
             height = heightSize;
         } else if (heightMode == MeasureSpec.AT_MOST) {
@@ -70,7 +66,6 @@ public class JustifiedTextView extends View {
         } else {
             height = desiredHeight;
         }
-
         setMeasuredDimension(width, height);
     }
 
@@ -89,14 +84,13 @@ public class JustifiedTextView extends View {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAntiAlias(true);
-        mPaint.setTextSize(26);
+        mPaint.setTextSize(36);
         mFontMetrics = new Paint.FontMetricsInt();
         int b1 =  (int) Math.abs(mPaint.ascent());
         int fh =  (int) mPaint.descent() + b1;
         mSpace = (int) mPaint.measureText(" ");
         mIndent = (int) mPaint.measureText("    ");
         flag = true;
-
         if (mText == null) return;
         StringTokenizer stringTokenizer = new StringTokenizer(mText);
         while (stringTokenizer.hasMoreTokens()){

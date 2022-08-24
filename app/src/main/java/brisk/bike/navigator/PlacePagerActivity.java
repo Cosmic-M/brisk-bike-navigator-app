@@ -12,12 +12,12 @@ import java.util.List;
 import brisk.bike.navigator.modul.MemoryPlace;
 
 /**
- * Created by Cosmic_M on 17.09.2017.
+ * Created by Cosmic_M at 03.10.2017
+ * Refactored by Cosmic_M at 24.8.2022
  */
 
 public class
 PlacePagerActivity extends FragmentActivity {
-    private static final String TAG = "TAG";
     private ViewPager mViewPager;
     private List<MemoryPlace> mPlaceList = null;
 
@@ -35,14 +35,13 @@ PlacePagerActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setResult(RESULT_OK);
         setContentView(R.layout.activity_place_pager);
-        mViewPager = (ViewPager) findViewById(R.id.activity_place_pager_view_pager);
+        mViewPager = findViewById(R.id.activity_place_pager_view_pager);
         mPlaceList = PlaceLab.get(this).getMemoryPlace();
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                Fragment fragment = PlaceFragment.newInstance(mPlaceList.get(position));
-                return fragment;
+                return PlaceFragment.newInstance(mPlaceList.get(position));
             }
 
             @Override

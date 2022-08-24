@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by Cosmic_M on 18.10.2017.
+ * Created by Cosmic_M at 03.10.2017
+ * Refactored by Cosmic_M at 24.8.2022
  */
 
 public class ChoiceDialog extends DialogFragment implements View.OnClickListener{
@@ -22,9 +23,6 @@ public class ChoiceDialog extends DialogFragment implements View.OnClickListener
     private static final String EXTRA_LATLNG_ARG = "package com.development.cosmic_m.navigator.extra_latlng_arg";
     private static final int REQUEST_NEW_POINT_REMOVE_OLD_DESTINATION = 350;
     private View view = null;
-    private TextView request;
-    private Button positiveBtn;
-    private Button negativeBtn;
     private String text;
     private LatLng mLatLng;
 
@@ -46,13 +44,13 @@ public class ChoiceDialog extends DialogFragment implements View.OnClickListener
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState){
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState){
         if (view == null) {
             getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
             view = inflater.inflate(R.layout.dialog_container, container, false);
-            request = (TextView) view.findViewById(R.id.text_dialog_id);
-            positiveBtn = (Button) view.findViewById(R.id.positive_btn_id);
-            negativeBtn = (Button) view.findViewById(R.id.negative_btn_id);
+            TextView request = view.findViewById(R.id.text_dialog_id);
+            Button positiveBtn = view.findViewById(R.id.positive_btn_id);
+            Button negativeBtn = view.findViewById(R.id.negative_btn_id);
             positiveBtn.setOnClickListener(this);
             negativeBtn.setOnClickListener(this);
             request.setText(text);

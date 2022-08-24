@@ -13,7 +13,8 @@ import java.io.File;
 import brisk.bike.navigator.modul.MemoryPlace;
 
 /**
- * Created by Cosmic_M on 03.10.2017.
+ * Created by Cosmic_M at 03.10.2017
+ * Refactored by Cosmic_M at 24.8.2022
  */
 
 public class DetailPlaceActivity extends AppCompatActivity {
@@ -21,12 +22,6 @@ public class DetailPlaceActivity extends AppCompatActivity {
     private static final String EXTRA_LONGITUDE = "longitude";
     private static final String EXTRA_DESCRIPTION = "text_description";
     private static final String EXTRA_FILE = "file";
-
-    private ImageView mImage;
-    private TextView mLatitude;
-    private TextView mLongitude;
-    private Button mRemoveBtn;
-    private JustifiedTextView mJustifiedTextView;
 
 
     public static Intent newInstance(Context context, MemoryPlace memoryPlace){
@@ -46,12 +41,12 @@ public class DetailPlaceActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_place_pager);
-        mImage = (ImageView) findViewById(R.id.iv_picture);
-        mLatitude = (TextView) findViewById(R.id.tv_latitude);
-        mLongitude = (TextView) findViewById(R.id.tv_longitude);
-        mRemoveBtn = (Button) findViewById(R.id.btn_remove_point);
+        ImageView mImage = findViewById(R.id.iv_picture);
+        TextView mLatitude = findViewById(R.id.tv_latitude);
+        TextView mLongitude = findViewById(R.id.tv_longitude);
+        Button mRemoveBtn = findViewById(R.id.btn_remove_point);
         mRemoveBtn.setVisibility(View.INVISIBLE);
-        mJustifiedTextView = (JustifiedTextView) findViewById(R.id.justified_text_view_id);
+        JustifiedTextView mJustifiedTextView = findViewById(R.id.justified_text_view_id);
         File photoFile = (File) getIntent().getSerializableExtra(EXTRA_FILE);
         double latit = getIntent().getDoubleExtra(EXTRA_LATITUDE, 0);
         double longit = getIntent().getDoubleExtra(EXTRA_LONGITUDE, 0);
