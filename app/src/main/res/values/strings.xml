@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">NEW BRISK BIKE NAVIGATOR</string>
+    <string name="app_name">BRISK BIKE NAVIGATOR</string>
     <string name="title_activity_maps">BIKE NAVIGATOR</string>
-    <string name="request">СБРОСИТЬ МАРКЕРА?</string>
+    <string name="request">ДО БАЗОВИХ МАРКЕРІВ?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="remove">REMOVE</string>
-    <string name="remove_point_question">УДАЛИТЬ МЕСТОПОЛОЖЕНИЕ ИЗ БАЗЫ ДАННЫХ?</string>
-    <string name="add_point_question_dialog">При попытке добавления текущего местоположения в БД,
-        %1$s будет удалена как близ лежащая. Хотите продолжить?</string>
+    <string name="remove_point_question">ВИДАЛИТИ МІСЦЕВІСТЬ З БАЗИ ДАНИХ?</string>
+    <string name="add_point_question_dialog">При намаганні додати поточної місцевості до бази даних,
+        %1$s буде видалена, бо знаходиться поряд. Приймаєте зміни?</string>
 </resources>
