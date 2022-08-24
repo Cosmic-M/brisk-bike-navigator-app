@@ -84,7 +84,7 @@ public class JustifiedTextView extends View {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAntiAlias(true);
-        mPaint.setTextSize(36);
+        mPaint.setTextSize(46);
         mFontMetrics = new Paint.FontMetricsInt();
         int b1 =  (int) Math.abs(mPaint.ascent());
         int fh =  (int) mPaint.descent() + b1;
